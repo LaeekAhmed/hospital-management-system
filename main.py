@@ -271,4 +271,4 @@ def viewRecords():
     rootV, text="<< BACK", text_font="Verdana 12", command=lambda: showframe(rootp))
     backV.pack(pady=10)
 
-menu()
+#menu()

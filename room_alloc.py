@@ -215,4 +215,4 @@ def room_all():
     rootaloc.mainloop()
 
 
-room_all()
+#room_all()

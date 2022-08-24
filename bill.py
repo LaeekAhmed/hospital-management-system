@@ -150,4 +150,4 @@ def BILLING():
     b2.place(x=10, y=500)
     rootbil.mainloop()
 
-BILLING()
+#BILLING()

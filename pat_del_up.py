@@ -292,4 +292,4 @@ def P_UPDATE():
     customtkinter.set_default_color_theme("blue")
 
 
-P_display()
+#P_display()
