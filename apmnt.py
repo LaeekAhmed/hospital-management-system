@@ -172,4 +172,4 @@ def va():
     b4.place(x=20, y=150)
 
 
-appo()
+#appo()

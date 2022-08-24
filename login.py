@@ -1,6 +1,5 @@
 from tkinter import *
 from main import menu
-from PIL import ImageTk, Image
 import customtkinter
 
 # Modes: "System" (standard), "Dark", "Light"
@@ -77,8 +76,8 @@ def entryfunc():
     login = customtkinter.CTkButton(topframe, text="LOGIN",text_font="Verdana 12", command=GET)
     login.pack(pady=12,padx=50)
     # logo;
-    root.iconbitmap(
-        "C:/Users/User/Downloads/hospital_icon.ico")  # hospital logo!
+    # root.iconbitmap(
+    #     "C:/Users/User/Downloads/hospital_icon.ico")  # hospital logo!
 
     # mode change button;
     label_mode = customtkinter.CTkLabel(root, text="Appearance Mode:",text_font="Verdana 12")

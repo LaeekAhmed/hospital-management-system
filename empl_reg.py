@@ -141,4 +141,4 @@ def delo():
     B2 = customtkinter.CTkButton(
         rootDE, text_font="Verdana 12", text="Back", command=lambda: showframe(rootE)).place(x=20, y=150)
 
-emp_screen()
+#emp_screen()
