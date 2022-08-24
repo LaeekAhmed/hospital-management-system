@@ -1,5 +1,5 @@
 from tkinter import *
-from window2 import menu
+from main import menu
 from PIL import ImageTk, Image
 import customtkinter
 

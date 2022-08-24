@@ -1,3 +1,4 @@
+from distutils.log import error
 import sqlite3
 import tkinter
 import customtkinter
@@ -16,29 +17,40 @@ def room_button():
     global P_id, r1, r2, room_t, da, dd, rate, room_no, r3, r4, r5, r6, conn
     conn = sqlite3.connect("MDBA.db")
     r1 = P_id.get()
-    r2 = room_t.get(tkinter.ACTIVE)
-    r3 = room_no.get(tkinter.ACTIVE)
+    r2 = room_t.get()
+    r3 = room_no.get()
     r4 = rate.get()
     r5 = da.get()
     r6 = dd.get()
+    pid = list(conn.execute("Select * from room where PATIENT_ID=?", (r1,)))
     if(len(str(r1)) == 0 or str(r3) == "select"):
         errorD = customtkinter.CTkLabel(
-            rootR, text_font="Verdana 12", text="Please fill all the required fields (*)", fg_color='red')
+            rootR, text_font="Verdana 12", text="Please fill all the required fields (*)", corner_radius=8,fg_color='red')
         errorD.pack(side=tkinter.BOTTOM, pady=10)
         errorD.after(2000, errorD.pack_forget)
     else:
         p = list(conn.execute("Select * from room where ROOM_NO=?", (r3,)))
-        if len(p) == 0:
+        if(list(conn.execute("SELECT * FROM PATIENT WHERE PATIENT_ID=?", (r1,))) == []):
+            errorP = customtkinter.CTkLabel(
+                rootR, text_font="Verdana 12", text="Error - Patiet must be registered", corner_radius=8, fg_color="red")
+            errorP.pack(side=tkinter.BOTTOM, pady=10)
+            errorP.after(2000, errorP.pack_forget)
+        elif(len(pid)!=0):
+            label_mode2 = customtkinter.CTkLabel(
+                rootR, text_font="Verdana 12", text="Patient has a booked room/use update", corner_radius=8,fg_color="red")
+            label_mode2.pack(side=tkinter.BOTTOM, pady=10)
+            label_mode2.after(2000, label_mode2.pack_forget)
+        elif len(p) == 0:
             conn.execute('INSERT INTO room VALUES(?,?,?,?,?,?)',
                          (r1, r3, r2, r4, r5, r6,))
             label_mode = customtkinter.CTkLabel(
-                rootR, text_font="Verdana 12", text="Room Allocated", fg_color="green")
+                rootR, text_font="Verdana 12", text="Room Allocated", corner_radius=8,fg_color="green")
             label_mode.pack(side=tkinter.BOTTOM, pady=10)
             label_mode.after(2000, label_mode.pack_forget)
         else:
             print("hello")
             label_mode = customtkinter.CTkLabel(
-                rootR, text_font="Verdana 12", text="Room Already Occupied", fg_color="red")
+                rootR, text_font="Verdana 12", text="Room Already Occupied", corner_radius=8,fg_color="red")
             label_mode.pack(side=tkinter.BOTTOM, pady=10)
             label_mode.after(2000, label_mode.pack_forget)
     conn.commit()
@@ -53,23 +65,29 @@ def room_button():
 def update_button():
     global P_id, r1, r2, room_t, da, dd, rate, room_no, r3, r4, r5, r6, conn
     r1 = P_id.get()
-    r2 = room_t.get(tkinter.ACTIVE)
-    r3 = room_no.get(tkinter.ACTIVE)
+    r2 = room_t.get()
+    r3 = room_no.get()
     r4 = rate.get()
     r5 = da.get()
     r6 = dd.get()
     p = list(conn.execute("Select * from room where PATIENT_ID=?", (r1,)))
-    if len(p) != 0:
+    pr = list(conn.execute("Select * from room where ROOM_NO=?", (r3,)))
+    if(len(pr)!=0):
+        label_mode8 = customtkinter.CTkLabel(
+            rootR, text_font="Verdana 12", text="Room Already Occupied", corner_radius=8,fg_color="red")
+        label_mode8.pack(side=tkinter.BOTTOM, pady=10)
+        label_mode8.after(2000, label_mode8.pack_forget)
+    elif len(p) != 0:
         conn.execute(
             'UPDATE room SET room_NO=?,room_Type=?,RATE=?,DATE_ADMITTED=?,DATE_DISCHARGED=? where PATIENT_ID=?', (r3, r2, r4, r5, r6, r1,))
         label_mode = customtkinter.CTkLabel(
-            rootR, text_font="Verdana 12", text="Details Updated", fg_color="green")
+            rootR, text_font="Verdana 12", text="Details Updated", corner_radius=8,fg_color="green")
         label_mode.pack(side=tkinter.BOTTOM, pady=10)
         label_mode.after(2000, label_mode.pack_forget)
         conn.commit()
     else:
         label_mode = customtkinter.CTkLabel(
-            rootR, text_font="Verdana 12", text="Error - Patient Not Registered", fg_color="red")
+            rootR, text_font="Verdana 12", text="Error - Patient Not Registered", corner_radius=8,fg_color="red")
         label_mode.pack(pady=10, side=tkinter.BOTTOM)
         label_mode.after(2000, label_mode.pack_forget)
     c1 = conn.cursor()
@@ -90,7 +108,7 @@ def roomD_button():
     p = list(c1.execute('select * from  room  where PATIENT_ID=?', (r1,)))
     if (len(p) == 0):
         label_mode = customtkinter.CTkLabel(
-            rootRD, text_font="Verdana 12", text="Error - Patient Not Registered", fg_color="red")
+            rootRD, text_font="Verdana 12", text="Error - Patient Not Registered", corner_radius=8,fg_color="red")
         label_mode.pack(pady=10, side=tkinter.BOTTOM)
         label_mode.after(2000, label_mode.pack_forget)
     else:
@@ -157,7 +175,7 @@ def room_all():
     showframe(rootR)
 
     r_head = customtkinter.CTkLabel(
-        rootR, text_font="Verdana 12", text="Room Allocation:-", fg_color="black")
+        rootR, text_font="Verdana 15", text="Room Allocation", corner_radius=8)
     r_head.place(x=30, y=15)
     P_id = customtkinter.CTkEntry(
         rootR, text_font="Verdana 12", placeholder_text="Patient id * ")
@@ -165,23 +183,17 @@ def room_all():
     room_tl = customtkinter.CTkLabel(
         rootR, text_font="Verdana 12", text="Room Type: (⬆⬇)")
     room_tl.place(x=30, y=110)
-    L = ['select', 'SINGLE room: $ 600',
-         'TWIN SHARING : $ 500', 'TRIPLE SHARING: $ 400']
-    room_t = tkinter.Listbox(rootR, width=26, height=1,
-                             selectmode='SINGLE', exportselection=0)
-    for i in L:
-        room_t.insert(tkinter.END, i)
-    room_t.place(x=550, y=330)
+    room_t = customtkinter.CTkOptionMenu(
+        rootR, values=["select","SINGLE room: $ 600","TWIN SHARING : $ 500","TRIPLE SHARING: $ 400"], text_font="Verdana 12")  # value selected will be arg for the func()
+    room_t.place(x=200, y=110)
     room_nol = customtkinter.CTkLabel(
         rootR, text_font="Verdana 12", text="Room Number * (⬆⬇)")
     room_nol.place(x=30, y=170)
     L1 = ['select', '101', '102-AA', '102-BB', '103', '104-AA', '104-BB', '105', '206-AAA', '206-BBB',
           '206-CCC', '207', '208-AAA', '208-BBB', '208-CCC', '210', '211', '302', '304-AA', '304-BB']
-    room_no = tkinter.Listbox(rootR, width=8, height=1,
-                              selectmode='SINGLE', exportselection=0)
-    for j in L1:
-        room_no.insert(tkinter.END, j)
-    room_no.place(x=630, y=520)
+    room_no = customtkinter.CTkOptionMenu(
+        rootR, values=L1, text_font="Verdana 12")
+    room_no.place(x=220, y=170)
     rate = customtkinter.CTkEntry(
         rootR, text_font="Verdana 12", placeholder_text="Room Charges")
     rate.place(x=50, y=220)
@@ -203,4 +215,4 @@ def room_all():
     rootaloc.mainloop()
 
 
-# room_all()
+room_all()

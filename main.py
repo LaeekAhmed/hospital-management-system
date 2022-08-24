@@ -2,13 +2,13 @@ import tkinter
 import sqlite3
 import tkinter.messagebox
 import customtkinter
-from PATDELSU import P_display
+from pat_del_up import P_display
 #from PATDELSU import D_display
-from PATDELSU import P_UPDATE
-from RooMT import room_all
-from BILLING import BILLING
-from employee_reg import emp_screen
-from appointment import appo
+from pat_del_up import P_UPDATE
+from room_alloc import room_all
+from bill import BILLING
+from empl_reg import emp_screen
+from apmnt import appo
 import tkinter.scrolledtext as st
 
 
@@ -64,7 +64,7 @@ def menu():
     #topframe.pack(pady=20, padx=20, fill="both", expand=True)
 
     m = customtkinter.CTkLabel(
-        topframe, text="Select an option : ", text_font="Verdana 13", fg_color="black")
+        topframe, text="Select an option : ", text_font="Verdana 13")
     button1 = customtkinter.CTkButton(
         topframe, text="1 - Patient Registration", text_font="Verdana 12", command=lambda: showframe(rootp))
     button2 = customtkinter.CTkButton(
@@ -120,12 +120,12 @@ def IN_PAT():  # insert values from patient reg. form into table PATIENT
     pp10 = pat_email.get()
     if(len(str(pp1)) == 0 or len(str(pp9)) == 0):
         label_mode = customtkinter.CTkLabel(
-            rootp, text_font="Verdana 12", text="Please fill all the required fields (*)", fg_color='red')
+            rootp, text_font="Verdana 12", text="Please fill all the required fields (*)", corner_radius=8,fg_color='red')
         label_mode.pack(pady=10)
         label_mode.after(2000, label_mode.pack_forget)
     elif(list(conn.execute("Select * from patient where patient_id=?", (pp1,))) != []):
         label_mode = customtkinter.CTkLabel(
-            rootp, text_font="Verdana 12", text="Patient Already Registered!", fg_color='red')
+            rootp, text_font="Verdana 12", text="Patient Already Registered!", corner_radius=8,fg_color='red')
         label_mode.pack(pady=10)
         label_mode.after(2000, label_mode.pack_forget)
     else:
@@ -134,15 +134,15 @@ def IN_PAT():  # insert values from patient reg. form into table PATIENT
         conn.execute('INSERT INTO CONTACT_NO VALUES (?,?,?)', (pp1, pp6, pp7))
         #customtkinter.CTkLabel(rootp,text="DETAILS INSERTED INTO DATABASE")
         label_mode = customtkinter.CTkLabel(
-            rootp, text_font="Verdana 12", text="Details inserted into database", fg_color="green")
+            rootp, text_font="Verdana 12", text="Details inserted into database", corner_radius=8,fg_color="green")
         label_mode.pack(pady=10)
         label_mode.after(2000, label_mode.pack_forget)
         conn.commit()
-        viewRecords()
-
+    clear_screen1()
 
 def menucom(new_command):
-    if(new_command == "Help"):
+    if(new_command == "View Records"):
+        clear_screen1()
         showframe(rootV)
         c1 = conn.cursor()
         c1.execute("select * from contact_no")
@@ -172,7 +172,7 @@ def PAT():
     labely = customtkinter.CTkLabel(
         rootp, text_font="Verdana 12", text="Menu : ").place(x=-20, y=20)
     menubar = customtkinter.CTkOptionMenu(
-        rootp, values=["New", "Help", "About", "Exit"], text_font="Verdana 12", command=menucom)  # value selected will be arg for func()
+        rootp, values=["New", "View Records", "About", "Exit"], text_font="Verdana 12", command=menucom)  # value selected will be arg for the func()
     menubar.place(x=20, y=50)
     regform = customtkinter.CTkLabel(
         rootp, text="REGISTRATION FORM:-")
@@ -229,27 +229,35 @@ def PAT():
         rootp, values=["Light", "Dark", "System"], text_font="Verdana 12", command=change_appearance_mode)
     optionmenu_1.place(x=20, y=120)
 
+def clear_screen1():
+    if 'text_area' in globals():
+        text_area.pack_forget()
+    backV.pack_forget()
+    viewRecords()
+
 def viewRecords():
+    global text_area,backV
     vv = list(conn.execute("select * from patient"))
     if (len(vv) == 0):
+        print("cp1")
         errorD = customtkinter.CTkLabel(
-            rootV, text_font="Verdana 12", text="No Records found", fg_color="red")
-        errorD.place(x=20, y=420)
-        errorD.after(2000, errorD.place_forget)
+            rootV, text_font="Verdana 12", text="No Records found", corner_radius=8,fg_color="red")
+        errorD.pack(pady=10)
+        errorD.after(2000, errorD.pack_forget)
     else:
         c1 = conn.cursor()
         c1.execute("select * from patient")
         text_area = st.ScrolledText(rootV,
                                     width=60,
-                                    height=30,
+                                    height=20,
                                     bg='black',
                                     fg="white",
                                     font=("Verdana",
-                                          9))
+                                          10))
 
-        text_area.place(x=100, y=100)
-
+        text_area.pack(padx=10,pady=10)
         # Inserting Text which is read only
+        text_area.insert(tkinter.INSERT,"Please click open page again from menu to refresh"+'\n'+'\n')
         for i in c1:
             # s1 = customtkinter.CTkLabel(
             #     rootAP, text_font="Verdana 12", text="patient id : "+str(i[0]))
@@ -259,8 +267,8 @@ def viewRecords():
                              str(i[0])+" , "+" Name : "+i[1]+" , "+" Doctor : "+i[6]+'\n')
         # Making the text read only
         text_area.configure(state='disabled')
-    back = customtkinter.CTkButton(
+    backV = customtkinter.CTkButton(
     rootV, text="<< BACK", text_font="Verdana 12", command=lambda: showframe(rootp))
-    back.place(x=200,y=500)
+    backV.pack(pady=10)
 
 menu()

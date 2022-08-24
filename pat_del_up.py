@@ -4,6 +4,8 @@ import sqlite3
 from turtle import width
 import customtkinter
 import tkinter.messagebox
+import tkinter.scrolledtext as st
+
 conn = sqlite3.connect("MDBA.db")
 # variables
 rootU = None
@@ -27,83 +29,38 @@ def change_appearance_mode(new_appearance_mode):
 
 def Search_button():
     global inp_s, entry, errorS, t, i, q, dis1, dis2, dis3, dis4, dis5, dis6, dis7, dis8, dis9, dis10
-    global l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, close
+    global l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, close, text_area
+    clear_screen()
     c1 = conn.cursor()  # cursor used to interact with db (do operations like create,modify etc)
     inp_s = entry.get()
     p = list(c1.execute('select * from PATIENT where PATIENT_ID=?', (inp_s,)))
     if (len(p) == 0):
         errorS = customtkinter.CTkLabel(
-            disp_frame, text_font="Verdana 12", text="Patient record not found", fg_color="red")
+            disp_frame, text_font="Verdana 12", text="Patient record not found", corner_radius=8,fg_color="red")
         errorS.pack(pady=10)
         errorS.after(2000, errorS.pack_forget)
     else:
         t = c1.execute(
             'SELECT * FROM PATIENT NATURAL JOIN CONTACT_NO where PATIENT_ID=?', (inp_s,))
-        for i in t:
-            l1 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text="PATIENT ID:")
-            dis1 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text=i[0])
-            l2 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text="PATIENT NAME:")
-            dis2 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text=i[1])
-            l3 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text="PATIENT SEX:")
-            dis3 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text=i[2])
-            l4 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text="BLOOD GROUP:")
-            dis4 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text=i[3])
-            l5 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text="PATIENT D.O.B:")
-            dis5 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text=i[4])
-            l6 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text="PATIENT ADDRESS:")
-            dis6 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text=i[5])
-            l7 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text="DOCTOR/TEAM:")
-            dis7 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text=i[6])
-            l8 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text="PATIENT EMAIL:")
-            dis8 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text=i[7])
-            l9 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text="CONTACT NO.:")
-            dis9 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text=i[8])
-            l10 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text="ALT. CONTACT:")
-            dis10 = customtkinter.CTkLabel(
-                disp_frame, text_font="Verdana 12", text=i[9])
-            close = customtkinter.CTkButton(
-                disp_frame, text_font="Verdana 12", text="❌", command=clear_screen, fg_color="red", width=7)
-            close.place(x=30, y=220)
-            l1.pack()
-            dis1.place(x=340, y=240)
-            l2.pack()
-            dis2.place(x=340, y=270)
-            l3.pack()
-            dis3.place(x=340, y=300)
-            l4.pack()
-            dis4.place(x=340, y=330)
-            l5.pack()
-            dis5.place(x=340, y=360)
-            l6.pack()
-            dis6.place(x=340, y=390)
-            l7.pack()
-            dis7.place(x=340, y=420)
-            l8.pack()
-            dis8.place(x=340, y=450)
-            l9.pack()
-            dis9.place(x=340, y=480)
-            l10.pack()
-            dis10.place(x=340, y=510)
-            conn.commit()
+        text_area = st.ScrolledText(disp_frame,
+                                    width=60,
+                                    height=10,
+                                    bg='black',
+                                    fg="white",
+                                    font=("Verdana",
+                                          12))
+        text_area.pack(padx=10,pady=15)
+        names = list(map(lambda x: x[0], t.description))
+        L1=[]
+        k=0
+        for j in t: 
+            L1=j
+        for i in names:
+                text_area.insert(tkinter.INSERT,str(i)+" : "+str(L1[k])+'\n')
+                k+=1
+        # Making the text read only
+        text_area.configure(state='disabled')
+        conn.commit()
 
 
 def eXO():
@@ -140,9 +97,9 @@ def P_display():
     searchB.pack()
     # other options;
     opt = customtkinter.CTkLabel(
-        disp_frame, text_font="Verdana 12", text="Other Options : ").pack(pady=20)
+        disp_frame, text_font="Verdana 12", text="Other Options : ").pack(pady=7)
     DELETE = customtkinter.CTkButton(
-        disp_frame, text_font="Verdana 12", text="  DELETE  ",  command=Delete_button).pack(pady=10)
+        disp_frame, text_font="Verdana 12", text="  DELETE  ",  command=Delete_button).pack(pady=5)
     UPD = customtkinter.CTkButton(
         disp_frame, text_font="Verdana 12", text="UPDATE",  command=lambda: showframe(rootU)).pack()
     # Modes: "System" (standard), "Dark", "Light"
@@ -157,31 +114,33 @@ entry1 = None
 errorD = None
 disd1 = None
 
-# DELTE BUTTON
+# DELTE BUTTONcleatext_
 
 
 def clear_screen():
-    l1.pack_forget()
-    dis1.place_forget()
-    l2.pack_forget()
-    dis2.place_forget()
-    l3.pack_forget()
-    dis3.place_forget()
-    l4.pack_forget()
-    dis4.place_forget()
-    l5.pack_forget()
-    dis5.place_forget()
-    l6.pack_forget()
-    dis6.place_forget()
-    l7.pack_forget()
-    dis7.place_forget()
-    l8.pack_forget()
-    dis8.place_forget()
-    l9.pack_forget()
-    dis9.place_forget()
-    l10.pack_forget()
-    dis10.place_forget()
-    close.place_forget()
+    if 'text_area' in globals():
+        text_area.pack_forget()
+    # l1.pack_forget()
+    # dis1.place_forget()
+    # l2.pack_forget()
+    # dis2.place_forget()
+    # l3.pack_forget()
+    # dis3.place_forget()
+    # l4.pack_forget()
+    # dis4.place_forget()
+    # l5.pack_forget()
+    # dis5.place_forget()
+    # l6.pack_forget()
+    # dis6.place_forget()
+    # l7.pack_forget()
+    # dis7.place_forget()
+    # l8.pack_forget()
+    # dis8.place_forget()
+    # l9.pack_forget()
+    # dis9.place_forget()
+    # l10.pack_forget()
+    # dis10.place_forget()
+    # close.place_forget()
 
 
 def Delete_button():
@@ -192,13 +151,14 @@ def Delete_button():
     p = list(conn.execute("select * from PATIENT where PATIENT_ID=?", (inp_d,)))
     if (len(p) == 0):
         errorD = customtkinter.CTkLabel(
-            disp_frame, text_font="Verdana 12", text="Patient record not found", fg_color="red")
+            disp_frame, text_font="Verdana 12", text="Patient record not found", corner_radius=8,fg_color="red")
         errorD.pack(pady=10)
         errorD.after(2000, errorD.pack_forget)
     else:
         conn.execute('DELETE FROM PATIENT where PATIENT_ID=?', (inp_d,))
+        conn.execute('DELETE FROM CONTACT_NO where PATIENT_ID=?', (inp_d,))
         disd1 = customtkinter.CTkLabel(
-            disp_frame, text_font="Verdana 12", text="Patient record deleted", fg_color="green")
+            disp_frame, text_font="Verdana 12", text="Patient record deleted", corner_radius=8,fg_color="green")
         disd1.pack(pady=10)
         disd1.after(2000, disd1.pack_forget)
         conn.commit()
@@ -261,14 +221,14 @@ def up1():
         conn.execute(
             'UPDATE CONTACT_NO set CONTACTNO=?,ALT_CONTACT=? WHERE PATIENT_ID=?', (u6, u7, u1,))
         label_mode = customtkinter.CTkLabel(
-            rootU, text_font="Verdana 12", text="DETAILS INSERTED INTO DATABASE", fg_color="green")
+            rootU, text_font="Verdana 12", text="DETAILS INSERTED INTO DATABASE", corner_radius=8,fg_color="green")
         label_mode.pack(pady=10)
         label_mode.after(2000, label_mode.pack_forget)
         conn.commit()
 
     else:
         label_mode = customtkinter.CTkLabel(
-            rootU, text_font="Verdana 12", text="PATIENT NOT REGISTERED", fg_color="red")
+            rootU, text_font="Verdana 12", text="PATIENT NOT REGISTERED", corner_radius=8,fg_color="red")
         label_mode.pack(pady=10)
         label_mode.after(2000, label_mode.pack_forget)
 
@@ -332,4 +292,4 @@ def P_UPDATE():
     customtkinter.set_default_color_theme("blue")
 
 
-# P_display()
+P_display()

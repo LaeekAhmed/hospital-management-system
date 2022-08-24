@@ -2,6 +2,7 @@ from logging import PlaceHolder
 import sqlite3
 import tkinter
 import tkinter.messagebox
+from turtle import width
 import customtkinter
 conn = sqlite3.connect("MDBA.db")
 
@@ -17,7 +18,7 @@ def date_up():
         "UPDATE ROOM SET DATE_DISCHARGED=? where PATIENT_ID=?", (b2, b1,))
     conn.commit()
     label_mode = customtkinter.CTkLabel(
-        rootB, text_font="Verdana 12", text="Appointment set", fg_color="green")
+        rootB, text_font="Verdana 12", text="Appointment set", corner_radius=8, fg_color="green")
     label_mode.place(x=200, y=400)
     label_mode.after(2000, label_mode.place_forget)
 
@@ -27,20 +28,20 @@ def up():
     conn = sqlite3.connect("MDBA.db")
     c1 = conn.cursor()
     b1 = P_id.get()
-    b3 = treat_1.get(tkinter.ACTIVE)
-    b4 = treat_2.get(tkinter.ACTIVE)
+    b3 = treat_1.get()
+    b4 = treat_2.get()
     b5 = cost_t.get()
-    b6 = med.get(tkinter.ACTIVE)
-    b7 = med_q.get(tkinter.ACTIVE)
+    b6 = med.get()
+    b7 = med_q.get()
     b8 = price.get()
     if(list(c1.execute("SELECT * FROM ROOM WHERE PATIENT_ID=?", (b1,))) == []):
         errorD = customtkinter.CTkLabel(
-            rootB, text_font="Verdana 12", text="Error - Patiet must have an allocated room", fg_color="red")
+            rootB, text_font="Verdana 12", text="Error - Patiet must have an allocated room", corner_radius=8, fg_color="red")
         errorD.place(x=100, y=410)
         errorD.after(2000, errorD.place_forget)
     elif(list(conn.execute("Select * from treatment where PATIENT_ID=?", (b1,))) != []):
         errorD = customtkinter.CTkLabel(
-            rootB, text_font="Verdana 12", text="ID Error - Patient's bill is already registered ", fg_color="red")
+            rootB, text_font="Verdana 12", text="ID Error - Patient's bill is already registered ", corner_radius=8, fg_color="red")
         errorD.place(x=100, y=410)
         errorD.after(2000, errorD.place_forget)
     else:
@@ -49,24 +50,25 @@ def up():
         conn.execute("INSERT INTO MEDICINE VALUES(?,?,?,?)", (b1, b6, b7, b8,))
         conn.commit()
         msg = customtkinter.CTkLabel(
-            rootB, text_font="Verdana 12", text="details updated", fg_color="green")
+            rootB, text_font="Verdana 12", text="details updated", corner_radius=8, fg_color="green")
         msg.place(x=200, y=400)
         msg.after(2000, msg.place_forget)
 
 
 def calci():
     global b1
+    b1 = P_id.get()
     conn = sqlite3.connect("MDBA.db")
     u = conn.execute(
         "Select sum(T_COST+ (M_COST*M_QTY) +(DATE_DISCHARGED-DATE_ADMITTED)*RATE) FROM ROOM NATURAL JOIN TREATMENT natural JOIN MEDICINE where PATIENT_ID=?", (b1,))
     conn.commit()
     for ii in u:
         pp = customtkinter.CTkLabel(
-            rootB, text_font="Verdana 12", fg_color='green', text="TOTAL AMOUNT OUTSTANDING :")
-        pp.place(y=300, x=50)
+            rootB, text_font="Verdana 12", corner_radius=8, fg_color='green', text="Total cost :")
+        pp.place(y=350, x=50)
         uu = customtkinter.CTkLabel(
-            rootB, fg_color='green', text_font="Verdana 12", text='$ '+str(ii[0]))
-        uu.place(y=300, x=350)
+            rootB, corner_radius=8, fg_color='green', text_font="Verdana 12", text='$ '+str(ii[0]))
+        uu.place(y=350, x=200)
 
 
 L1 = None
@@ -94,66 +96,58 @@ def BILLING():
     rootB = customtkinter.CTkFrame(rootbil)
     rootB.grid(row=0, column=0, padx=15, pady=20, sticky='nsew')
     head = customtkinter.CTkLabel(
-        rootB, text_font="Verdana 12", text="PATIENT BILL :")
+        rootB, text_font="Verdana 12", text="Patient bill :")
     head.grid(row=10, column=5)
     P_id = customtkinter.CTkEntry(
         rootB, text_font="Verdana 12", placeholder_text="patient id")
-    P_id.grid(row=20, column=5)
+    P_id.place(x=30,y=50)
     dd = customtkinter.CTkEntry(
-        rootB, text_font="Verdana 12", placeholder_text="Date discharged")
-    dd.grid(row=50, column=5)
+        rootB, text_font="Verdana 12",width=180, placeholder_text="Date discharged")
+    dd.place(x=30,y=90)
     ddp = customtkinter.CTkButton(
-        rootB, text_font="Verdana 12", text="UPDATE DISCHARGE DATE", command=date_up)
-    ddp.grid(row=45, column=15)
+        rootB, text_font="Verdana 12", text="Upd discharge date", command=date_up)
+    ddp.place(x=310, y=500)
     treat = customtkinter.CTkLabel(
-        rootB, text_font="Verdana 12", text="SELECT TREATMENT:")
-    treat.grid(row=60, column=15)
-    L1 = ["QUARANTINE", "SURGERY", "LAB TEST", "CONSULTAION"]
-    treat_1 = tkinter.Listbox(
-        rootB, width=15, height=1, selectmode='SINGLE', exportselection=0)
-    for j in L1:
-        treat_1.insert(tkinter.END, j)
-    treat_1.grid(row=65, column=15)
+        rootB, text_font="Verdana 12", text="Select treatment:")
+    treat.place(x=330,y=50)
+    L1 = ["quarantine", "surgery", "lab test", "consultaion"]
+    treat_1 = customtkinter.CTkOptionMenu(
+        rootB, values=L1, text_font="Verdana 12")
+    treat_1.place(x=330,y=80)
     treat_c = customtkinter.CTkLabel(
-        rootB, text_font="Verdana 12", text="CODE:")
-    treat_c.grid(row=60, column=5)
+        rootB, text_font="Verdana 12", text="code:")
+    treat_c.place(x=330,y=130)
     L2 = ["C_1", "S_1", "L_1"]
-    treat_2 = tkinter.Listbox(rootB, width=6, height=1,
-                              selectmode='SINGLE', exportselection=0)
-    for jj in L2:
-        treat_2.insert(tkinter.END, jj)
-    treat_2.grid(row=65, column=5)
+    treat_2 = customtkinter.CTkOptionMenu(
+        rootB, values=L2, text_font="Verdana 12")
+    treat_2.place(x=330,y=160)
+    med1 = customtkinter.CTkLabel(
+        rootB, text_font="Verdana 12", text="Select medicine:")
+    med1.place(x=330,y=210)
+    L3 = ["chloroquine", "favilavir", "brufen", "disprin", "bandage", "digene"]
+    med = customtkinter.CTkOptionMenu(
+        rootB, values=L3, text_font="Verdana 12")
+    med.place(x=330,y=240)
+    med_ql = customtkinter.CTkLabel(
+        rootB, text_font="Verdana 12", text="Quantity:")
+    med_ql.place(x=30,y=220)
+    L4 = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    x = map(str,L4)
+    med_q = customtkinter.CTkOptionMenu(
+        rootB, values=list(x), text_font="Verdana 12")
+    med_q.place(x=30,y=250)
     cost_t = customtkinter.CTkEntry(
         rootB, text_font="Verdana 12", placeholder_text="cost")
-    cost_t.grid(row=77, column=5)
-    med1 = customtkinter.CTkLabel(
-        rootB, text_font="Verdana 12", text="SELECT MEDICINE:")
-    med1.grid(row=87, column=5)
-    L3 = ["CHLOROQUINE", "FAVILAVIR", "BRUFEN", "DISPRIN", "BANDAGE", "DIGENE"]
-    med = tkinter.Listbox(rootB, width=15, height=1,
-                          selectmode='SINGLE', exportselection=0)
-    for jjj in L3:
-        med.insert(tkinter.END, jjj)
-    med.grid(row=92, column=5)
-    med_ql = customtkinter.CTkLabel(
-        rootB, text_font="Verdana 12", text="QUANTITY")
-    med_ql.grid(row=87, column=15)
-    L4 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    med_q = tkinter.Listbox(rootB, width=4, height=1,
-                            selectmode='SINGLE', exportselection=0)
-    for jjjj in L4:
-        med_q.insert(tkinter.END, jjjj)
-    med_q.grid(row=92, column=15)
+    cost_t.place(x=30,y=170)
     price = customtkinter.CTkEntry(
         rootB, text_font="Verdana 12", placeholder_text="price")
-    price.grid(row=100, column=5)
+    price.place(x=30,y=130)
     b1 = customtkinter.CTkButton(
         rootB, text_font="Verdana 12", text="Generate bill", command=calci)
-    b1.place(x=190, y=500)
+    b1.place(x=160, y=500)
     b2 = customtkinter.CTkButton(
         rootB, text_font="Verdana 12", text="Submit", command=up)
     b2.place(x=10, y=500)
     rootbil.mainloop()
 
-
-# BILLING()
+BILLING()
