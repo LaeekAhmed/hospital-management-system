@@ -1,9 +1,9 @@
 ## Hospital-Management-System
-- DB management system made with python-tkinter & SQLite  
+- Data-Base management system made with python-tkinter & SQLite  
 - UI improved using customTkinter module.  
-- Includes basic features like adding, deleting and updating records as well as features like room allocation, employee registration, bill generator and more.
+- Includes basic features like adding, deleting and updating records as well as features like room allocation, employee/patient registration, bill generator and more.
 
-### Steps to Run ; 
+- ### Steps to Run ; 
 - intall a code-editor pref. VS Code  
 - install python  
 - try running `pip -V` or `python -V` in the terminal
