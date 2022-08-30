@@ -1,4 +1,4 @@
-## Hosp-mng-sys
+## Hospital-Management-System
 - DB management system made with python-tkinter & SQLite  
 - UI improved using customTkinter module.  
 - Includes basic features like adding, deleting and updating records as well as features like room allocation, employee registration, bill generator and more.
