@@ -142,7 +142,7 @@ def viewAppointment():
                                     font=("Verdana",
                                           15))
 
-        text_area.place(x=100, y=700)
+        text_area.pack(pady=35)
 
         # Inserting Text which is read only
         for i in s:
@@ -161,15 +161,15 @@ def va():
     rootAP = customtkinter.CTkFrame(rootapp)
     h1 = customtkinter.CTkLabel(
         rootAP, text_font="Verdana 12", text="Enter Date To View Appointments;")
-    h1.place(x=20, y=20)
+    h1.pack(pady=5)
     e8 = customtkinter.CTkEntry(rootAP, text_font="Verdana 12")
-    e8.place(x=20, y=50)
+    e8.pack(pady=5)
     b5 = customtkinter.CTkButton(
         rootAP, text_font="Verdana 12", text="Search", command=viewAppointment)
-    b5.place(x=20, y=100)
+    b5.pack(pady=5)
     b4 = customtkinter.CTkButton(
         rootAP, text_font="Verdana 12", text="Back", command=lambda: showframe(rootAA))
-    b4.place(x=20, y=150)
+    b4.pack(pady=5)
 
 
-#appo()
+appo()
