@@ -171,5 +171,4 @@ def va():
         rootAP, text_font="Verdana 12", text="Back", command=lambda: showframe(rootAA))
     b4.pack(pady=5)
 
-
-appo()
+#appo()
