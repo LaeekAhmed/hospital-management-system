@@ -70,11 +70,11 @@ def menu():
     button2 = customtkinter.CTkButton(
         topframe, text="2 - Room Allocation", text_font="Verdana 12", command=room_all)
     button3 = customtkinter.CTkButton(
-        topframe, text="3.Employee Registration", text_font="Verdana 12", command=emp_screen)
+        topframe, text="3 - Employee Registration", text_font="Verdana 12", command=emp_screen)
     button4 = customtkinter.CTkButton(
-        topframe, text="4.Book Appointment", text_font="Verdana 12", command=appo)
+        topframe, text="4 - Book Appointment", text_font="Verdana 12", command=appo)
     button5 = customtkinter.CTkButton(
-        topframe, text="5.Patient Bill", text_font="Verdana 12", command=BILLING)
+        topframe, text="5 - Patient Bill", text_font="Verdana 12", command=BILLING)
     m.place(x=55, y=5)
     button1.pack(side=tkinter.TOP)
     button1.place(x=80, y=50)
