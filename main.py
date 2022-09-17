@@ -74,7 +74,7 @@ def menu():
     button4 = customtkinter.CTkButton(
         topframe, text="4 - Book Appointment", text_font="Verdana 12", command=appo)
     button5 = customtkinter.CTkButton(
-        topframe, text="5 - Patient Billing", text_font="Verdana 12", command=BILLING)
+        topframe, text="5 - Patient Bill", text_font="Verdana 12", command=BILLING)
     m.place(x=55, y=5)
     button1.pack(side=tkinter.TOP)
     button1.place(x=80, y=50)
@@ -271,4 +271,4 @@ def viewRecords():
     rootV, text="<< BACK", text_font="Verdana 12", command=lambda: showframe(rootp))
     backV.pack(pady=10)
 
-menu()
+#menu()
