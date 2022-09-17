@@ -52,7 +52,7 @@ def emp_screen():
         frame.grid(row=0, column=0, padx=30, pady=30, sticky='nsew')
     showframe(rootE)
 
-    H = customtkinter.CTkLabel(rootE, text_font="Verdana 13", text="Employee Registration:-",
+    H = customtkinter.CTkLabel(rootE, text_font="Verdana 13", text="Employee Registration ;",
                                corner_radius=8,fg_color='black')
     H.place(x=50, y=20)
     t1 = customtkinter.CTkEntry(

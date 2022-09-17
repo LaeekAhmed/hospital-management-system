@@ -70,11 +70,11 @@ def menu():
     button2 = customtkinter.CTkButton(
         topframe, text="2 - Room Allocation", text_font="Verdana 12", command=room_all)
     button3 = customtkinter.CTkButton(
-        topframe, text="3.Employee Registration", text_font="Verdana 12", command=emp_screen)
+        topframe, text="3 - Employee Registration", text_font="Verdana 12", command=emp_screen)
     button4 = customtkinter.CTkButton(
-        topframe, text="4.Book Appointment", text_font="Verdana 12", command=appo)
+        topframe, text="4 - Book Appointment", text_font="Verdana 12", command=appo)
     button5 = customtkinter.CTkButton(
-        topframe, text="5.Patient Bill", text_font="Verdana 12", command=BILLING)
+        topframe, text="5 - Patient Billing", text_font="Verdana 12", command=BILLING)
     m.place(x=55, y=5)
     button1.pack(side=tkinter.TOP)
     button1.place(x=80, y=50)
@@ -89,11 +89,11 @@ def menu():
     # mode chnage button;
     label_mode = customtkinter.CTkLabel(
         topframe, text_font="Verdana 12", text="Appearance Mode:")
-    label_mode.place(x=10, y=400)
+    label_mode.place(x=55, y=400)
 
     optionmenu_1 = customtkinter.CTkOptionMenu(
         topframe, values=["Light", "Dark", "System"], text_font="Verdana 12", command=change_appearance_mode)
-    optionmenu_1.place(x=10, y=450)
+    optionmenu_1.place(x=80, y=450)
 
     root1.mainloop()
 
@@ -172,7 +172,7 @@ def PAT():
     labely = customtkinter.CTkLabel(
         rootp, text_font="Verdana 12", text="Menu : ").place(x=-20, y=20)
     menubar = customtkinter.CTkOptionMenu(
-        rootp, values=["New", "View Records", "About", "Exit"], text_font="Verdana 12", command=menucom)  # value selected will be arg for the func()
+        rootp, values=["View Records", "About", "Exit"], text_font="Verdana 12", command=menucom)  # value selected will be arg for the func()
     menubar.place(x=20, y=50)
     regform = customtkinter.CTkLabel(
         rootp, text="REGISTRATION FORM:-")
@@ -257,7 +257,7 @@ def viewRecords():
 
         text_area.pack(padx=10,pady=10)
         # Inserting Text which is read only
-        text_area.insert(tkinter.INSERT,"Please click open page again from menu to refresh"+'\n'+'\n')
+        text_area.insert(tkinter.INSERT,"Please open (View Records) page again from menu to refresh"+'\n'+'\n')
         for i in c1:
             # s1 = customtkinter.CTkLabel(
             #     rootAP, text_font="Verdana 12", text="patient id : "+str(i[0]))
@@ -271,4 +271,4 @@ def viewRecords():
     rootV, text="<< BACK", text_font="Verdana 12", command=lambda: showframe(rootp))
     backV.pack(pady=10)
 
-#menu()
+menu()

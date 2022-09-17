@@ -175,7 +175,7 @@ def room_all():
     showframe(rootR)
 
     r_head = customtkinter.CTkLabel(
-        rootR, text_font="Verdana 15", text="Room Allocation", corner_radius=8)
+        rootR, text_font="Verdana 13", text="Room Allocation ;",corner_radius=8,fg_color='black')
     r_head.place(x=30, y=15)
     P_id = customtkinter.CTkEntry(
         rootR, text_font="Verdana 12", placeholder_text="Patient id * ")

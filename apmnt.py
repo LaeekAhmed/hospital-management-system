@@ -51,7 +51,7 @@ def appo():
     for frame in (rootAA, rootAP):
         frame.grid(row=0, column=0, padx=30, pady=30, sticky='nsew')
     showframe(rootAA)
-    H = customtkinter.CTkLabel(rootAA, text_font="Verdana 12", text="APOINTMENTS:-",
+    H = customtkinter.CTkLabel(rootAA, text_font="Verdana 12", text="Appointments ;",
                                corner_radius=8,fg_color="black")
     H.place(x=55, y=15)
     e1 = customtkinter.CTkEntry(

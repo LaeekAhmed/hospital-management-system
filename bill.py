@@ -96,8 +96,8 @@ def BILLING():
     rootB = customtkinter.CTkFrame(rootbil)
     rootB.grid(row=0, column=0, padx=15, pady=20, sticky='nsew')
     head = customtkinter.CTkLabel(
-        rootB, text_font="Verdana 12", text="Patient bill :")
-    head.grid(row=10, column=5)
+        rootB, text_font="Verdana 13", text="Patient bill ;",corner_radius=8,fg_color='black')
+    head.place(x=30,y=10)
     P_id = customtkinter.CTkEntry(
         rootB, text_font="Verdana 12", placeholder_text="patient id")
     P_id.place(x=30,y=50)
@@ -150,4 +150,4 @@ def BILLING():
     b2.place(x=10, y=500)
     rootbil.mainloop()
 
-#BILLING()
+# BILLING()

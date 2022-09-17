@@ -228,7 +228,7 @@ def up1():
 
     else:
         label_mode = customtkinter.CTkLabel(
-            rootU, text_font="Verdana 12", text="PATIENT NOT REGISTERED", corner_radius=8,fg_color="red")
+            rootU, text_font="Verdana 12", text="Patient not registered", corner_radius=8,fg_color="red")
         label_mode.pack(pady=10)
         label_mode.after(2000, label_mode.pack_forget)
 
