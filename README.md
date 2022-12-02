@@ -16,4 +16,5 @@
 - This will open up the main menu from where the user can navigate to different frames/windows to work with the selected option.   
    
  <img src="https://user-images.githubusercontent.com/102300255/190835873-db1b6cc7-e75e-4d12-8a3b-4472d7207a10.png" alt="drawing" width="400"/>  
+ <img src="https://user-images.githubusercontent.com/102300255/205307929-2f477711-7e02-4098-ba8b-ee500d46ae7f.png" alt="drawing" width="400"/> 
 
