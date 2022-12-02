@@ -31,8 +31,9 @@ def room_button():
     else:
         p = list(conn.execute("Select * from room where ROOM_NO=?", (r3,)))
         if(list(conn.execute("SELECT * FROM PATIENT WHERE PATIENT_ID=?", (r1,))) == []):
+            print("cp1")
             errorP = customtkinter.CTkLabel(
-                rootR, text_font="Verdana 12", text="Error - Patiet must be registered", corner_radius=8, fg_color="red")
+                rootR, text_font="Verdana 12", text="Error - Patient must be registered", corner_radius=8, fg_color="red")
             errorP.pack(side=tkinter.BOTTOM, pady=10)
             errorP.after(2000, errorP.pack_forget)
         elif(len(pid)!=0):
@@ -215,4 +216,4 @@ def room_all():
     rootaloc.mainloop()
 
 
-#room_all()
+room_all()
