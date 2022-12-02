@@ -1,4 +1,4 @@
-## Hospital-Management-System
+## Hospital-DB-Management-System
 - GUI Data-Base management system made with python-tkinter & SQLite  
 - UI improved using customTkinter module (https://github.com/TomSchimansky/CustomTkinter).  
 - Includes basic features like adding, deleting and updating records as well as features like room allocation, employee/patient registration, bill generator and more.
